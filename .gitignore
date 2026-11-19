@@ -1,0 +1,49 @@
+# ---------- Segredos e ambiente ----------
+# .env tem a senha do MySQL, APP_KEY e tokens (WhatsApp/SMTP): NUNCA versionar
+.env
+.env.backup
+.env.production
+.env.*.local
+/auth.json
+
+# ---------- Dependências ----------
+/vendor
+/node_modules
+
+# ---------- Arquivos gerados pelo sistema ----------
+# backups do banco, logo enviado e relatórios ficam em storage/app/private
+# (já ignorados pelos .gitignore internos de storage/; listados aqui por segurança)
+/storage/app/private/backups/
+/storage/app/private/relatorios/
+/storage/app/private/oficina/
+/storage/*.key
+/storage/pail
+/public/build
+/public/hot
+/public/storage
+/public/fonts-manifest.dev.json
+*.sql
+*.sql.gz
+
+# ---------- Logs e cache de testes ----------
+*.log
+.phpunit.result.cache
+/.phpunit.cache
+/coverage
+
+# ---------- Editores e ferramentas ----------
+.phpactor.json
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.vscode
+/.zed
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+
+# ---------- Sistema operacional ----------
+.DS_Store
+Thumbs.db
+desktop.ini
