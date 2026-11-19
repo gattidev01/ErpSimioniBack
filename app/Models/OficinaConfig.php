@@ -28,7 +28,7 @@ class OficinaConfig extends Model
     {
         return static::query()->firstOrCreate(['id' => 1], [
             'nome' => config('app.name'),
-            'cor_documento' => '#e8590c',
+            'cor_documento' => '#d92d20',
             'validade_orcamento_dias' => 7,
             'garantia_dias' => 90,
         ]);

@@ -16,11 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        OficinaConfig::atual()->update([
-            'nome' => env('OFICINA_NOME', 'Simioni Performance'),
-            'condicoes_orcamento' => 'Valores sujeitos a alteração caso sejam identificados outros defeitos durante a execução do serviço, '
-                .'mediante nova aprovação do cliente. Peças substituídas ficam à disposição do cliente.',
-        ]);
+        // só preenche na primeira vez: não sobrescreve o que a oficina já configurou na tela
+        if (! OficinaConfig::query()->exists()) {
+            OficinaConfig::atual()->update([
+                'nome' => env('OFICINA_NOME', 'Simioni Performance'),
+                'condicoes_orcamento' => 'Valores sujeitos a alteração caso sejam identificados outros defeitos durante a execução do serviço, '
+                    .'mediante nova aprovação do cliente. Peças substituídas ficam à disposição do cliente.',
+            ]);
+        }
 
         $email = env('ADMIN_EMAIL', 'admin@oficina.local');
         if (! User::where('email', $email)->exists()) {
