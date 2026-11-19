@@ -20,6 +20,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
         $middleware->api(append: [ConverterCamelCase::class, UsuarioAtivo::class]);
         $middleware->alias(['perfil' => ExigirPerfil::class]);
+
+        // Em produção o acesso chega por Traefik -> Nginx do front. Confiar nesses proxies faz o
+        // Laravel enxergar HTTPS e o IP real do visitante (usado no limite de tentativas de login).
+        // Só ligue onde a API NÃO é acessível diretamente pela internet.
+        if ($proxies = env('TRUSTED_PROXIES')) {
+            $middleware->trustProxies(at: $proxies === '*' ? '*' : explode(',', $proxies));
+        }
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

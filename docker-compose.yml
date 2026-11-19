@@ -1,0 +1,86 @@
+# ERP Simioni Performance — backend no Dokploy.
+# As variáveis (${...}) vêm da aba "Environment" do Dokploy, que grava o arquivo .env ao lado deste.
+# O front (repositório ErpSimioni) chega na API pela rede dokploy-network, no endereço erp-api:8080.
+
+x-app: &app
+  build: .
+  image: erp-simioni-back:latest
+  restart: unless-stopped
+  env_file: .env
+  environment:
+    DB_HOST: mysql
+    DB_PORT: 3306
+    LOG_CHANNEL: stderr
+  volumes:
+    - erp-storage:/app/storage/app
+  depends_on:
+    mysql:
+      condition: service_healthy
+
+services:
+  api:
+    <<: *app
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      LOG_CHANNEL: stderr
+      PAPEL: web
+    networks:
+      default: {}
+      dokploy-network:
+        aliases: [erp-api]
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"exit(@file_get_contents('http://127.0.0.1:8080/up') ? 0 : 1);\""]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  fila:
+    <<: *app
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      LOG_CHANNEL: stderr
+      PAPEL: fila
+    depends_on:
+      api:
+        condition: service_healthy
+
+  agenda:
+    <<: *app
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      LOG_CHANNEL: stderr
+      PAPEL: agenda
+    depends_on:
+      api:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: America/Sao_Paulo
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - erp-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  erp-storage:
+  erp-mysql:
+
+networks:
+  dokploy-network:
+    external: true
