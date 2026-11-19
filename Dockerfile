@@ -1,11 +1,11 @@
 # =============================================================================
-#  ERP Simioni Performance — imagem do backend (Laravel 13 + PHP 8.3)
+#  ERP Simioni Performance — imagem do backend (Laravel 13 + PHP 8.4)
 #  A mesma imagem roda 3 papéis, escolhidos pela variável PAPEL:
 #    web    -> Nginx + PHP-FPM servindo a API na porta 8080 (padrão)
 #    fila   -> php artisan queue:work   (e-mail, WhatsApp, relatórios, backup)
 #    agenda -> php artisan schedule:work (rotinas diárias)
 # =============================================================================
-FROM php:8.3-fpm-bookworm
+FROM php:8.4-fpm-bookworm
 
 COPY --from=mlocati/php-extension-installer:2.7 /usr/bin/install-php-extensions /usr/local/bin/
 COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer

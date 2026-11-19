@@ -17,7 +17,7 @@ BACK=$BASE/back
 FRONT=$BASE/front
 REPO_BACK=git@github-erp-back:gattidev01/ErpSimioniBack.git
 REPO_FRONT=git@github-erp-front:gattidev01/ErpSimioni.git
-PHPV=8.3
+PHPV=8.4
 BANCO=erp_oficina
 USUARIO_BANCO=erp
 
@@ -47,7 +47,7 @@ apt-get install -yq git unzip curl ca-certificates gnupg software-properties-com
 # -----------------------------------------------------------------------------
 verde "2/11 PHP $PHPV"
 if ! apt-cache show "php$PHPV-fpm" >/dev/null 2>&1; then
-  # Ubuntu 22.04 não traz o PHP 8.3: usa o repositório mantido por Ondřej Surý
+  # Ubuntu não traz o PHP 8.4 por padrão: usa o repositório mantido por Ondřej Surý
   add-apt-repository -y ppa:ondrej/php
   apt-get update -q
 fi

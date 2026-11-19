@@ -9,7 +9,7 @@ set -euo pipefail
 
 BACK=/var/www/erp/back
 FRONT=/var/www/erp/front
-PHPV=8.3
+PHPV=8.4
 export COMPOSER_ALLOW_SUPERUSER=1
 
 verde() { printf '\n\033[1;32m==> %s\033[0m\n' "$*"; }

@@ -101,7 +101,7 @@ Ele baixa o código, atualiza o banco (migrations), recompila o front e reinicia
 | Peça | Onde | Ver / reiniciar |
 |---|---|---|
 | Site + API (Nginx) | `/etc/nginx/sites-available/erp` | `systemctl status nginx` |
-| PHP | PHP-FPM 8.3 | `systemctl restart php8.3-fpm` |
+| PHP | PHP-FPM 8.4 | `systemctl restart php8.4-fpm` |
 | Banco | MySQL, banco `erp_oficina` | `mysql erp_oficina` |
 | Fila de jobs | Supervisor `erp-fila` | `supervisorctl status` · log em `/var/log/erp-fila.log` |
 | Rotinas diárias | `/etc/cron.d/erp-oficina` | rodam a cada minuto via `schedule:run` |
