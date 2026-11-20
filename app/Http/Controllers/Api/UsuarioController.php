@@ -64,7 +64,7 @@ class UsuarioController extends Controller
             'perfil' => ['required', new Enum(Perfil::class)],
             'funcionario_id' => ['nullable', 'uuid', 'exists:funcionarios,id', 'required_if:perfil,mecanico'],
             'ativo' => ['required', 'boolean'],
-            'password' => [$atual ? 'nullable' : 'required', Password::min(8)->letters()->numbers()],
+            'password' => [$atual ? 'nullable' : 'required', Password::min(10)->letters()->mixedCase()->numbers()],
         ], ['funcionario_id.required_if' => 'Vincule o mecânico a um funcionário para ele ver as OS dele.']);
     }
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -23,6 +25,8 @@ class AuthController extends Controller
             $dados['lembrar'] ?? false,
         );
         if (! $ok) {
+            // trilha de auditoria (sem registrar a senha)
+            Log::warning('Login recusado', ['email' => Str::lower($dados['email']), 'ip' => $request->ip(), 'agente' => mb_substr((string) $request->userAgent(), 0, 120)]);
             // mensagem genérica: não revela se o e-mail existe
             throw ValidationException::withMessages(['email' => 'E-mail ou senha incorretos.']);
         }

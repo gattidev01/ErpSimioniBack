@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // login do SPA por cookie de sessão (HttpOnly) + proteção CSRF do Sanctum
         $middleware->statefulApi();
         $middleware->api(append: [ConverterCamelCase::class, UsuarioAtivo::class]);
+        $middleware->throttleApi(); // limite 'api' definido no AppServiceProvider
         $middleware->alias(['perfil' => ExigirPerfil::class]);
 
         // Em produção o acesso chega por Traefik -> Nginx do front. Confiar nesses proxies faz o
